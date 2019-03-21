@@ -1,0 +1,154 @@
+
+I. 			За домашното:
+https://www.tutorialspoint.com/unix_terminal_online.php?fbclid=IwAR2fTIoOd-koQzcpNfgD-0HzVWfj74V7dL7B8xOwePv0RLRdstlBtobOJi8
+
+II. 		GitHub
+https://www.youtube.com/watch?v=SwK2dPFXhpU
+to install git i have to have sudo rights or to be the root user
+sudo apt-get install get
+2. Setum my user id and emial to linux
+git config --global user.name "radodevops"
+git config --global user.email "radodevops@outlook.com"
+3. Now go to github website and create repository
+create new > New repository
+Owner:  radodevops/gittest
+descriptio: this is just for test
+Public account 
+- Creating Repository
+4. Repository is created , lets create directory for this in our operating system in out home directory
+mkdir gittest
+cd gittest
+ls
+echo "# gittest" >> README.txt 			#creates readme file
+git init								#initialize git in my directory, creates .git file
+git add README.md						#add your README.md file to git
+git commit -m "first commit"			#once you add you file I have to commit in order to save the changes in git, and I need to give comment respective to the commit "-m" is for the description
+git remote add origin https://github.com/radodevops/gittest.git		# I will link my local directory to git directory
+git push -u origin master				#this is to push my changes to git, I need to give my username : radodevops and my password, once did this my changes will be commited to my git directory
+click on git directory and check for the changes.
+5. Now for example I want to add new file to my git directory
+nano abc.txt
+# add text to the file - hi git .. press Ctrl+O and enter and will save the data into the new file, Ctrl + X to exit
+ls #abc.txt
+git add abc.txt
+git commit -m "i added abc.txt"
+git remote add origin https://github.com/radodevops/gittest.git
+git push -u origin master
+username: radodevops
+password
+go to website and click on repository
+
+III.		Global and Local variables in Linux
+https://www.youtube.com/watch?v=d0QcN_ZgY8c
+local variable is set to a local function its not gonna leave that function
+Example!:
+
+#!/bin/nash
+x=10
+func(){
+echo "Global x is still $x"
+local x=20 			 # задаване на локалната променлива
+echo "local x is $x" # извиква локалната промелива обаче метода който я повиква трябва да е след като сме я задали.
+}
+echo "Global x is $x"
+func # това извиква функцията
+
+Резултат:
+Global x is 10
+Global s is still 10
+Local x is 20 # локалната за функцията променлива излиза винаги последна след глобалните променливи
+
+
+IV.		Какво е .bashrc в Linux
+https://www.youtube.com/watch?v=1sFVdAPBelk
+I have to be in my home directory
+pwd
+I may or may not allready have a .bashrc file.
+ls .bashrc
+nano .bashrc
+There I can put some commands that can run my shell is open, and that could be when I am login to my system or even when I am opening a new terminal. I can put all my favourite aliases here.
+Even I can put my variableses here.
+Echo Test.
+when we create new tab/terminal all in the file is executed.
+alias ls="l --color -l" 
+ls # когато вече съм създал alias мога при изпъление на ls да видя резултат с това което е записано в .bashrc
+
+V. Какво е cron job
+https://www.youtube.com/watch?v=4Icg3MYZZqI
+also known as job schedules , task shedules
+if cron job is scheduled at 5am and computer is off , and if I start the computer at 6am, cron job will not run.
+system cron job runs on the system
+user specific cron jobs
+cron jobs can be seen in /var/spool/cron directory and I have to be logged as root.
+ls /var/spool/cron # if it is empty no cron jobs are existing on the system
+ps -aux | grep cron 	# checks if my cron deamon is running;
+	crond process is running every minute checking for cron file in folder /var/spool/cron.
+vi /etc/crontab
+#adding next row in the file
+* * * * * root /usr/bin/uptime >> /root/uptime.systemwide.txt # This job will run every minute, hour, day of month, day of week and result will be forwarded to /root/uptime.systemwide.txt
+date # checking the time when the file will be created.
+watch -n 1 date # this will run command date and will count every second
+ls -leave
+cat uptime.systemwide.txt #show the content of the file
+ls -ltr # checking the bytes of the file, so we know if new content is written into it
+cat uptime.systemwide.txt # now shows two rows
+#lets create user specific crons
+crontab 	# for user specific crons this is the commant: "crontab"
+crontab --help
+crontab -l 	# list user crontabs
+crontab -u root -l #list only crons for root user
+crontab -u user -u #editing user root crontab
+# once edited I add in it he next:
+* * * * * /usr/bin/uptime >> /root/uptime.root.txt 
+ls /var/spool/cron
+root # now I have record for root, since crontab for root wa created
+# another thing to know, there are two cron file : cron.allow and cron.deny is used for restriction who can use cron. in centos6 does not create the files automatically for you 
+ls /etc/cron*
+vi cron.allow
+root # will allow root to run crontabs
+ci cron.deny # put user to deny run crontabs
+
+VI.		What is nc - netcat
+Netcat operates by initiating a TCP connection to a remote host. Most basic syntax is:
+netcat [options] host port
+This will attempt to initiate a TCP to the defined host on the port number specified. This is basically functions similarily to the old Linux telnet command. The connection is entirely unencrypted.
+netcat -u host port
+I can specify the ports by placing a dash between the first and last
+netcat host startport-endport
+On most systems, we can use either netcat or nc interchangeably. They are aliases for the same command.
+We can scan all ports by using the command:
+netcat -z -v domain.com 1-1000
+The output will be like this:
+nc: connect to domain.com port 1 (tcp) failed: Connection refused
+nc: connect to domain.com port 2 (tcp) failed: Connection refused
+nc: connect to domain.com port 3 (tcp) failed: Connection refused
+nc: connect to domain.com port 4 (tcp) failed: Connection refused
+nc: connect to domain.com port 5 (tcp) failed: Connection refused
+nc: connect to domain.com port 6 (tcp) failed: Connection refused
+nc: connect to domain.com port 7 (tcp) failed: Connection refused
+. . .
+Connection to domain.com 22 port [tcp/ssh] succeeded!
+. . .
+
+#another example:
+netcat -z -n -v 198.51.100.0 1-1000
+# I will redirect standard error to standart output using the 2>&1 bash syntax. I will then filter the results with grep
+netcat -z -n -v 198.51.100.0 1-1000 2>&1 | grep succeeded
+output:
+Connection to 198.51.100.0 22 port [tcp/*] succeeded!
+Here I can see that only port open in the range 1-1000 on remote computer is port 22 , the traditional SSH port.
+
+# On one machine, you can tell netcat to listen to a specific port for connections. We can do this by :
+netcat -l 4444 #This will tell netcat to listen for TCp connections on port 4444. As a regular (non root) user, you will not be able to open any ports under 1000, as a security measure.
+on the second server open connection to port 4444:
+netcat domain.com 4444
+https://www.youtube.com/watch?v=Vh0wXXWZ4kQ
+netcat can send files
+
+VII.	I/O
+https://www.digitalocean.com/community/tutorials/an-introduction-to-linux-i-o-redirection
+find - Find returns files with filenames that match the argument passed to find
+grep - Grep returns text that matches the string pattern passed to grep
+tee  - Tee redirects standard input to both standard output and one or more files
+tr   - tr finds-and-replaces one string with another
+wc   - wc counts characters, linesm and words
